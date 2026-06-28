@@ -1,7 +1,7 @@
-const Anthropic = require("@anthropic-ai/sdk");
+const Groq = require("groq-sdk");
 
 const TIMEOUT_MS = 25_000;
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const SYSTEM_PROMPT = `You are Chroma AI, an expert UI/UX designer specializing in color theory and Figma design systems.
 
@@ -28,7 +28,7 @@ You ALWAYS respond with a JSON object matching this exact schema — no markdown
 
 Color values use Figma's normalized 0–1 float range (not 0–255).
 Only set fill or stroke if the element actually has that property type; use null otherwise.
-Ensure WCAG AA contrast (≥4.5:1) for text on its background.`;
+Ensure WCAG AA contrast (>=4.5:1) for text on its background.`;
 
 async function analyzeAndColor(elements, intent) {
   // Cap at 40 nodes to keep the prompt tight and the response fast
@@ -50,14 +50,17 @@ async function analyzeAndColor(elements, intent) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-  let message;
+  let response;
   try {
-    message = await client.messages.create(
+    response = await client.chat.completions.create(
       {
-        model: "claude-haiku-4-5-20251001",
+        model: "llama-3.3-70b-versatile",
         max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userMessage }],
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user",   content: userMessage },
+        ],
       },
       { signal: controller.signal }
     );
@@ -65,10 +68,8 @@ async function analyzeAndColor(elements, intent) {
     clearTimeout(timer);
   }
 
-  const raw = message.content[0].text.trim();
-  // Strip markdown fences if the model wraps the JSON anyway
-  const json = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
-  return JSON.parse(json);
+  const raw = response.choices[0].message.content.trim();
+  return JSON.parse(raw);
 }
 
 module.exports = { analyzeAndColor };
