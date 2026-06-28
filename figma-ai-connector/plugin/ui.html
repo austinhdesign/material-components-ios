@@ -248,7 +248,7 @@
 <div class="chat" id="chat"></div>
 
 <div class="settings">
-  <input type="text" id="serverUrl" placeholder="Connector URL (e.g. http://localhost:3000)" />
+  <input type="text" id="serverUrl" placeholder="MCP server URL (e.g. http://localhost:3000/sse)" />
 </div>
 
 <div class="input-bar">
@@ -272,7 +272,7 @@
 
   // ── Persist server URL ──────────────────────────────────────────────────────
   const STORAGE_KEY = "chroma_ai_server_url";
-  serverUrl.value = localStorage.getItem(STORAGE_KEY) || "http://localhost:3000";
+  serverUrl.value = localStorage.getItem(STORAGE_KEY) || "http://localhost:3000/sse";
   serverUrl.addEventListener("change", () => localStorage.setItem(STORAGE_KEY, serverUrl.value));
 
   // ── Chat helpers ────────────────────────────────────────────────────────────
@@ -305,16 +305,19 @@
 
   // ── Send to connector ───────────────────────────────────────────────────────
   async function analyze(intent) {
-    const url = (serverUrl.value || "http://localhost:3000").replace(/\/$/, "");
+    // Strip /sse suffix if the user pasted the full MCP URL
+    const base = (serverUrl.value || "http://localhost:3000/sse")
+      .replace(/\/sse\/?$/, "")
+      .replace(/\/$/, "");
 
     const typing = addTyping();
     sendBtn.disabled = true;
 
     try {
-      const res = await fetch(`${url}/invoke`, {
+      const res = await fetch(`${base}/invoke`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tool: "analyze_and_color", input: { elements, intent } }),
+        body: JSON.stringify({ elements, intent }),
       });
 
       typing.remove();
