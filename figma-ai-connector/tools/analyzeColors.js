@@ -1,5 +1,6 @@
 const Anthropic = require("@anthropic-ai/sdk");
 
+const TIMEOUT_MS = 25_000;
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const SYSTEM_PROMPT = `You are Chroma AI, an expert UI/UX designer specializing in color theory and Figma design systems.
@@ -30,7 +31,10 @@ Only set fill or stroke if the element actually has that property type; use null
 Ensure WCAG AA contrast (≥4.5:1) for text on its background.`;
 
 async function analyzeAndColor(elements, intent) {
-  const elementSummary = elements
+  // Cap at 40 nodes to keep the prompt tight and the response fast
+  const capped = elements.slice(0, 40);
+
+  const elementSummary = capped
     .map(
       (el) =>
         `- nodeId: ${el.nodeId}, name: "${el.name}", type: ${el.type}, ` +
@@ -41,17 +45,30 @@ async function analyzeAndColor(elements, intent) {
 
   const userMessage =
     `User intent: "${intent || "apply a clean, modern color palette"}"\n\n` +
-    `Selected elements (${elements.length} total):\n${elementSummary}`;
+    `Selected elements (${capped.length} total):\n${elementSummary}`;
 
-  const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 2048,
-    system: SYSTEM_PROMPT,
-    messages: [{ role: "user", content: userMessage }],
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  let message;
+  try {
+    message = await client.messages.create(
+      {
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: "user", content: userMessage }],
+      },
+      { signal: controller.signal }
+    );
+  } finally {
+    clearTimeout(timer);
+  }
 
   const raw = message.content[0].text.trim();
-  return JSON.parse(raw);
+  // Strip markdown fences if the model wraps the JSON anyway
+  const json = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+  return JSON.parse(json);
 }
 
 module.exports = { analyzeAndColor };
