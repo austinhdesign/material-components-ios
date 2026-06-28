@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: chroma-ai
+    runtime: node
+    rootDir: figma-ai-connector
+    buildCommand: npm ci
+    startCommand: node index.js
+    healthCheckPath: /health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PORT
+        value: "10000"
