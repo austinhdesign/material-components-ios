@@ -1,0 +1,12 @@
+{
+  "name": "Chroma AI",
+  "id": "chroma-ai-color-connector",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["*"],
+    "reasoning": "Connects to the user-configured Chroma AI connector server to perform AI color analysis."
+  }
+}
