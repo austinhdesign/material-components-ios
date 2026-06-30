@@ -82,3 +82,4 @@ docsite-generator
 *.pyc
 
 
+.claude/
