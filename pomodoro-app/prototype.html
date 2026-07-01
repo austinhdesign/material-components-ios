@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍅 Pomodoro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
+          colors: {
+            focus: { DEFAULT: '#ef4444', light: '#fca5a5', ring: '#dc2626', bg: 'rgba(239,68,68,0.08)' },
+            sbreak: { DEFAULT: '#10b981', light: '#6ee7b7', ring: '#059669', bg: 'rgba(16,185,129,0.08)' },
+            lbreak: { DEFAULT: '#3b82f6', light: '#93c5fd', ring: '#2563eb', bg: 'rgba(59,130,246,0.08)' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0f172a; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+    /* Ring progress animation */
+    .ring-track { transition: none; }
+    .ring-fill {
+      transition: stroke-dashoffset 0.25s linear, stroke 0.4s ease;
+      transform-origin: center;
+      transform: rotate(-90deg);
+    }
+
+    /* Timer digits */
+    .timer-digits {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    /* Pause pulse */
+    @keyframes pulse-opacity {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+    .paused .timer-digits { animation: pulse-opacity 1.4s ease-in-out infinite; }
+
+    /* Idle shimmer */
+    @keyframes idle-glow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
+    .idle .timer-digits { animation: idle-glow 2.5s ease-in-out infinite; }
+
+    /* Phase transition */
+    @keyframes phase-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .phase-label { animation: phase-in 0.35s ease; }
+
+    /* Session dot */
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+    }
+    .dot.active { transform: scale(1.5); }
+
+    /* Button hover states */
+    .btn-primary {
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.2s ease;
+    }
+    .btn-primary:hover:not(:disabled) { transform: scale(1.04); }
+    .btn-primary:active:not(:disabled) { transform: scale(0.96); }
+    .btn-secondary {
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-secondary:hover:not(:disabled) { transform: scale(1.08); opacity: 1 !important; }
+    .btn-secondary:active:not(:disabled) { transform: scale(0.94); }
+
+    /* Progress bar */
+    .goal-bar-fill { transition: width 0.5s ease; }
+
+    /* Toast */
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(16px); }
+    }
+    .toast { animation: toast-in 0.3s ease; }
+    .toast.hiding { animation: toast-out 0.3s ease forwards; }
+
+    /* Stat card hover */
+    .stat-card { transition: background-color 0.2s ease, transform 0.2s ease; }
+    .stat-card:hover { background-color: rgba(255,255,255,0.07); transform: translateY(-1px); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ── Header ──────────────────────────────────────────────────────── -->
+  <header class="flex items-center justify-between px-5 py-4 border-b border-white/5">
+    <div class="flex items-center gap-2">
+      <span class="text-xl">🍅</span>
+      <span class="font-semibold text-slate-100 tracking-tight">Pomodoro</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="badge-sessions"
+        class="text-xs font-medium bg-white/10 text-slate-300 px-2.5 py-1 rounded-full">
+        0 sessions today
+      </span>
+      <button id="btn-notify" onclick="requestNotifications()"
+        title="Enable notifications"
+        class="text-slate-500 hover:text-slate-300 transition-colors p-1 rounded">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Main ────────────────────────────────────────────────────────── -->
+  <main class="flex-1 flex flex-col items-center justify-center px-5 py-8 gap-6">
+
+    <!-- Phase label -->
+    <div id="phase-label" class="phase-label">
+      <span id="phase-text"
+        class="text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full border"
+        style="color: #ef4444; border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.08)">
+        Focus
+      </span>
+    </div>
+
+    <!-- Circular timer -->
+    <div class="relative select-none" style="width:260px; height:260px">
+      <svg width="260" height="260" viewBox="0 0 260 260" aria-hidden="true">
+        <!-- Track -->
+        <circle
+          class="ring-track"
+          cx="130" cy="130" r="110"
+          fill="none"
+          stroke="rgba(255,255,255,0.06)"
+          stroke-width="10"
+        />
+        <!-- Fill -->
+        <circle
+          id="ring-fill"
+          class="ring-fill"
+          cx="130" cy="130" r="110"
+          fill="none"
+          stroke="#ef4444"
+          stroke-width="10"
+          stroke-linecap="round"
+          stroke-dasharray="691.15"
+          stroke-dashoffset="0"
+        />
+      </svg>
+
+      <!-- Timer display overlay -->
+      <div id="timer-state-class"
+        class="absolute inset-0 flex flex-col items-center justify-center idle">
+        <div id="timer-display"
+          class="timer-digits text-slate-100"
+          style="font-size: 4rem; font-weight: 700;"
+          role="timer" aria-live="polite" aria-label="Timer">
+          25:00
+        </div>
+        <div id="session-subtitle" class="text-xs text-slate-500 mt-1.5 font-medium">
+          Press Space to start
+        </div>
+      </div>
+    </div>
+
+    <!-- Session dots -->
+    <div id="session-dots" class="flex items-center gap-2.5" aria-label="Session progress">
+    </div>
+
+    <!-- Controls -->
+    <div class="flex items-center gap-5 mt-1">
+      <!-- Restart -->
+      <button id="btn-restart" onclick="restart()" disabled
+        title="Restart (R)"
+        aria-label="Restart session"
+        class="btn-secondary opacity-30 text-slate-400 hover:text-slate-200 p-2.5 rounded-xl transition-all disabled:cursor-not-allowed disabled:pointer-events-none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+      </button>
+
+      <!-- Start / Pause -->
+      <button id="btn-main" onclick="toggleTimer()"
+        aria-label="Start timer"
+        class="btn-primary w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+        style="background-color: #ef4444;">
+        <svg id="icon-play" width="26" height="26" viewBox="0 0 24 24" fill="white" stroke="none">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        <svg id="icon-pause" width="26" height="26" viewBox="0 0 24 24" fill="white" stroke="none" class="hidden">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>
+      </button>
+
+      <!-- Skip -->
+      <button id="btn-skip" onclick="skip()" disabled
+        title="Skip (S)"
+        aria-label="Skip to next phase"
+        class="btn-secondary opacity-30 text-slate-400 hover:text-slate-200 p-2.5 rounded-xl transition-all disabled:cursor-not-allowed disabled:pointer-events-none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 4 15 12 5 20 5 4"/>
+          <line x1="19" y1="5" x2="19" y2="19"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-3 gap-3 w-full max-w-sm mt-2">
+      <div class="stat-card flex flex-col items-center gap-1 bg-white/5 rounded-xl px-3 py-3 cursor-default">
+        <span id="stat-sessions" class="text-xl font-bold text-slate-100">0</span>
+        <span class="text-xs text-slate-500 font-medium">Sessions</span>
+      </div>
+      <div class="stat-card flex flex-col items-center gap-1 bg-white/5 rounded-xl px-3 py-3 cursor-default">
+        <span id="stat-minutes" class="text-xl font-bold text-slate-100">0</span>
+        <span class="text-xs text-slate-500 font-medium">Minutes</span>
+      </div>
+      <div class="stat-card flex flex-col items-center gap-1 bg-white/5 rounded-xl px-3 py-3 cursor-default">
+        <span id="stat-streak" class="text-xl font-bold text-slate-100">0</span>
+        <span class="text-xs text-slate-500 font-medium">Day streak</span>
+      </div>
+    </div>
+
+    <!-- Goal progress -->
+    <div class="w-full max-w-sm space-y-2">
+      <div class="flex justify-between items-center text-xs">
+        <span class="text-slate-400 font-medium">Daily goal</span>
+        <span id="goal-label" class="text-slate-400">0 / 8 sessions</span>
+      </div>
+      <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+        <div id="goal-bar" class="goal-bar-fill h-full rounded-full" style="width:0%; background:#ef4444;"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────── -->
+  <footer class="text-center pb-5 px-5">
+    <p class="text-xs text-slate-600">
+      <kbd class="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-slate-500">Space</kbd> start/pause &nbsp;·&nbsp;
+      <kbd class="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-slate-500">R</kbd> restart &nbsp;·&nbsp;
+      <kbd class="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-slate-500">S</kbd> skip
+    </p>
+  </footer>
+
+  <!-- ── Toast container ─────────────────────────────────────────────── -->
+  <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-50"></div>
+
+  <!-- ── Script ──────────────────────────────────────────────────────── -->
+  <script>
+    // ─────────────────────────────────────────────────────────────────────────
+    // CONSTANTS
+    // ─────────────────────────────────────────────────────────────────────────
+    const PHASES = {
+      focus:        { label: 'Focus',       duration: 25 * 60, color: '#ef4444', ringBg: 'rgba(239,68,68,0.08)',  borderColor: 'rgba(239,68,68,0.35)'  },
+      'short-break':{ label: 'Short Break', duration:  5 * 60, color: '#10b981', ringBg: 'rgba(16,185,129,0.08)', borderColor: 'rgba(16,185,129,0.35)' },
+      'long-break': { label: 'Long Break',  duration: 15 * 60, color: '#3b82f6', ringBg: 'rgba(59,130,246,0.08)', borderColor: 'rgba(59,130,246,0.35)' },
+    }
+    const SESSIONS_BEFORE_LONG_BREAK = 4
+    const DAILY_GOAL = 8
+    const CIRCUMFERENCE = 2 * Math.PI * 110  // 691.15
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────────────────────────────────────
+    let state = {
+      phase: 'focus',                // 'focus' | 'short-break' | 'long-break'
+      status: 'idle',                // 'idle' | 'running' | 'paused'
+      startTime: null,               // Date.now() when last (re)started
+      pausedAt: null,                // Date.now() when paused
+      totalPausedMs: 0,              // accumulated pause ms
+      duration: PHASES.focus.duration, // current phase duration in seconds
+      remaining: PHASES.focus.duration, // seconds remaining
+      sessionIndex: 0,               // position in the cycle (0–3)
+      completedAt: null,             // timestamp of last phase completion
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // SESSION HISTORY (localStorage)
+    // ─────────────────────────────────────────────────────────────────────────
+    function todayStr() {
+      const d = new Date()
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+    }
+
+    function loadSessions() {
+      try {
+        return JSON.parse(localStorage.getItem('pomodoro-sessions') || '[]')
+      } catch { return [] }
+    }
+
+    function saveSessions(sessions) {
+      try { localStorage.setItem('pomodoro-sessions', JSON.stringify(sessions)) } catch {}
+    }
+
+    function recordSession(phase, durationSec) {
+      const sessions = loadSessions()
+      sessions.push({ date: todayStr(), phase, duration: durationSec, completedAt: Date.now() })
+      saveSessions(sessions)
+    }
+
+    function todaysFocusSessions() {
+      const today = todayStr()
+      return loadSessions().filter(s => s.date === today && s.phase === 'focus')
+    }
+
+    function calculateStreak() {
+      const sessions = loadSessions()
+      if (!sessions.length) return 0
+      // Group by date
+      const dates = [...new Set(sessions.filter(s => s.phase === 'focus').map(s => s.date))].sort().reverse()
+      if (!dates.length) return 0
+      const today = todayStr()
+      const yesterday = (() => {
+        const d = new Date(); d.setDate(d.getDate() - 1)
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+      })()
+      // Must have activity today or yesterday to have an active streak
+      if (dates[0] !== today && dates[0] !== yesterday) return 0
+      let streak = 1
+      for (let i = 1; i < dates.length; i++) {
+        const prev = new Date(dates[i-1] + 'T12:00:00')
+        const curr = new Date(dates[i] + 'T12:00:00')
+        const diffDays = Math.round((prev - curr) / 86400000)
+        if (diffDays === 1) streak++
+        else break
+      }
+      return streak
+    }
+
+    function todaysFocusMinutes() {
+      const today = todayStr()
+      return Math.floor(
+        loadSessions()
+          .filter(s => s.date === today && s.phase === 'focus')
+          .reduce((sum, s) => sum + s.duration, 0) / 60
+      )
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // SNAPSHOT PERSISTENCE
+    // ─────────────────────────────────────────────────────────────────────────
+    function saveSnapshot() {
+      try {
+        localStorage.setItem('pomodoro-snapshot', JSON.stringify({
+          phase: state.phase,
+          status: state.status,
+          startTime: state.startTime,
+          pausedAt: state.pausedAt,
+          totalPausedMs: state.totalPausedMs,
+          duration: state.duration,
+          sessionIndex: state.sessionIndex,
+          savedAt: Date.now(),
+        }))
+      } catch {}
+    }
+
+    function loadSnapshot() {
+      try {
+        const raw = localStorage.getItem('pomodoro-snapshot')
+        if (!raw) return
+        const snap = JSON.parse(raw)
+        if (!snap || !snap.phase) return
+
+        state.phase = snap.phase
+        state.duration = snap.duration
+        state.sessionIndex = snap.sessionIndex || 0
+        state.totalPausedMs = snap.totalPausedMs || 0
+
+        if (snap.status === 'running' && snap.startTime) {
+          // Recalculate remaining
+          const elapsed = Date.now() - snap.startTime - state.totalPausedMs
+          const remaining = Math.max(0, state.duration - Math.floor(elapsed / 1000))
+          if (remaining > 0) {
+            state.status = 'running'
+            state.startTime = snap.startTime
+            state.pausedAt = null
+            state.remaining = remaining
+          } else {
+            // Session completed while browser was closed — just show idle next phase
+            state.status = 'idle'
+            state.startTime = null
+            state.remaining = state.duration
+            showToast('Session completed while you were away 🍅', 4000)
+          }
+        } else if (snap.status === 'paused' && snap.pausedAt) {
+          state.status = 'paused'
+          state.startTime = snap.startTime
+          state.pausedAt = snap.pausedAt
+          const elapsed = snap.pausedAt - snap.startTime - state.totalPausedMs
+          state.remaining = Math.max(0, state.duration - Math.floor(elapsed / 1000))
+        } else {
+          state.status = 'idle'
+          state.remaining = state.duration
+        }
+      } catch {
+        state.status = 'idle'
+        state.remaining = state.duration
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // TIMER ENGINE
+    // ─────────────────────────────────────────────────────────────────────────
+    let tickInterval = null
+
+    function tick() {
+      if (state.status !== 'running') return
+      const elapsed = Date.now() - state.startTime - state.totalPausedMs
+      const remaining = Math.max(0, state.duration - Math.floor(elapsed / 1000))
+      state.remaining = remaining
+      if (remaining === 0) {
+        completePhase()
+      } else {
+        render()
+      }
+    }
+
+    function start() {
+      if (state.status !== 'idle') return
+      state.status = 'running'
+      state.startTime = Date.now()
+      state.pausedAt = null
+      state.totalPausedMs = 0
+      saveSnapshot()
+      requestNotificationsIfNeeded()
+      render()
+    }
+
+    function pause() {
+      if (state.status !== 'running') return
+      state.status = 'paused'
+      state.pausedAt = Date.now()
+      saveSnapshot()
+      render()
+    }
+
+    function resume() {
+      if (state.status !== 'paused') return
+      state.totalPausedMs += Date.now() - state.pausedAt
+      state.pausedAt = null
+      state.status = 'running'
+      saveSnapshot()
+      render()
+    }
+
+    function restart() {
+      state.status = 'running'
+      state.startTime = Date.now()
+      state.pausedAt = null
+      state.totalPausedMs = 0
+      state.remaining = state.duration
+      saveSnapshot()
+      render()
+    }
+
+    function skip() {
+      if (state.status === 'idle') return
+      completePhase(true)
+    }
+
+    function toggleTimer() {
+      if (state.status === 'idle') start()
+      else if (state.status === 'running') pause()
+      else if (state.status === 'paused') resume()
+    }
+
+    function completePhase(skipped = false) {
+      const completedPhase = state.phase
+      const actualDuration = skipped
+        ? state.duration - state.remaining
+        : state.duration
+
+      // Record focus sessions only (not breaks)
+      if (completedPhase === 'focus' && !skipped) {
+        recordSession('focus', actualDuration)
+        sendNotification('Focus complete! 🍅', 'Great work — take a well-earned break.')
+        showToast('Focus session complete! 🍅', 3000)
+        playBeep('focus')
+      } else if (completedPhase !== 'focus' && !skipped) {
+        sendNotification('Break over!', 'Time to get back to focus.')
+        showToast('Break over! Time to focus.', 3000)
+        playBeep('break')
+      }
+
+      // Determine next phase
+      let nextPhase
+      if (completedPhase === 'focus') {
+        const newIndex = state.sessionIndex + (skipped ? 0 : 1)
+        state.sessionIndex = newIndex >= SESSIONS_BEFORE_LONG_BREAK ? 0 : newIndex
+        if (!skipped && newIndex >= SESSIONS_BEFORE_LONG_BREAK) {
+          nextPhase = 'long-break'
+          state.sessionIndex = 0
+        } else {
+          nextPhase = 'short-break'
+        }
+      } else {
+        nextPhase = 'focus'
+      }
+
+      state.phase = nextPhase
+      state.duration = PHASES[nextPhase].duration
+      state.remaining = PHASES[nextPhase].duration
+      state.status = 'idle'
+      state.startTime = null
+      state.pausedAt = null
+      state.totalPausedMs = 0
+
+      saveSnapshot()
+      render()
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // AUDIO (Web Audio API)
+    // ─────────────────────────────────────────────────────────────────────────
+    let audioCtx = null
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        try { audioCtx = new (window.AudioContext || window.webkitAudioContext)() } catch {}
+      }
+      return audioCtx
+    }
+
+    function playBeep(type) {
+      const ctx = getAudioCtx()
+      if (!ctx) return
+      const beeps = type === 'focus'
+        ? [{ freq: 440, t: 0 }, { freq: 440, t: 0.18 }, { freq: 528, t: 0.36 }]
+        : [{ freq: 330, t: 0 }, { freq: 330, t: 0.2 }]
+
+      beeps.forEach(({ freq, t }) => {
+        const osc = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.connect(gain)
+        gain.connect(ctx.destination)
+        osc.frequency.value = freq
+        osc.type = 'sine'
+        const now = ctx.currentTime + t
+        gain.gain.setValueAtTime(0, now)
+        gain.gain.linearRampToValueAtTime(0.3, now + 0.02)
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35)
+        osc.start(now)
+        osc.stop(now + 0.36)
+      })
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // NOTIFICATIONS
+    // ─────────────────────────────────────────────────────────────────────────
+    let notifRequested = false
+
+    function requestNotificationsIfNeeded() {
+      if (notifRequested || !('Notification' in window)) return
+      if (Notification.permission === 'default') {
+        notifRequested = true
+        Notification.requestPermission()
+      }
+    }
+
+    function requestNotifications() {
+      if (!('Notification' in window)) { showToast('Notifications not supported in this browser', 3000); return }
+      Notification.requestPermission().then(p => {
+        if (p === 'granted') showToast('Notifications enabled ✓', 2000)
+        else showToast('Notification permission denied', 2000)
+        updateNotifyButton()
+      })
+    }
+
+    function sendNotification(title, body) {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return
+      new Notification(title, { body, icon: '' })
+    }
+
+    function updateNotifyButton() {
+      const btn = document.getElementById('btn-notify')
+      if (!('Notification' in window)) { btn.style.display = 'none'; return }
+      if (Notification.permission === 'granted') {
+        btn.style.color = '#10b981'
+        btn.title = 'Notifications enabled'
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // TOAST
+    // ─────────────────────────────────────────────────────────────────────────
+    function showToast(message, duration = 2500) {
+      const container = document.getElementById('toast-container')
+      const el = document.createElement('div')
+      el.className = 'toast text-xs text-slate-200 bg-slate-800 border border-white/10 px-4 py-2.5 rounded-xl shadow-xl pointer-events-auto'
+      el.textContent = message
+      container.appendChild(el)
+      setTimeout(() => {
+        el.classList.add('hiding')
+        setTimeout(() => el.remove(), 300)
+      }, duration)
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // KEYBOARD
+    // ─────────────────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault()
+        toggleTimer()
+        // Unlock audio context on first user gesture
+        const ctx = getAudioCtx()
+        if (ctx && ctx.state === 'suspended') ctx.resume()
+      }
+      if (e.key === 'r' || e.key === 'R') {
+        if (state.status !== 'idle') restart()
+      }
+      if (e.key === 's' || e.key === 'S') {
+        if (state.status !== 'idle') skip()
+      }
+    })
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // RENDER
+    // ─────────────────────────────────────────────────────────────────────────
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60)
+      const s = seconds % 60
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+    }
+
+    function render() {
+      const phase = PHASES[state.phase]
+      const { status, remaining, duration, sessionIndex } = state
+      const elapsed = duration - remaining
+      const progress = duration > 0 ? elapsed / duration : 0
+
+      // ── Ring fill
+      const offset = CIRCUMFERENCE * (1 - progress)
+      const ring = document.getElementById('ring-fill')
+      ring.style.strokeDashoffset = offset
+      ring.style.stroke = phase.color
+
+      // ── Timer digits
+      document.getElementById('timer-display').textContent = formatTime(remaining)
+
+      // ── Timer state class (for animation)
+      const stateEl = document.getElementById('timer-state-class')
+      stateEl.classList.remove('idle', 'paused', 'running')
+      stateEl.classList.add(status)
+
+      // ── Subtitle
+      const sub = document.getElementById('session-subtitle')
+      if (status === 'idle') sub.textContent = 'Press Space to start'
+      else if (status === 'running') sub.textContent = phase.label
+      else if (status === 'paused') sub.textContent = 'Paused'
+
+      // ── Phase label
+      const phaseText = document.getElementById('phase-text')
+      phaseText.textContent = phase.label
+      phaseText.style.color = phase.color
+      phaseText.style.borderColor = phase.borderColor
+      phaseText.style.background = phase.ringBg
+
+      // ── Main button
+      const btnMain = document.getElementById('btn-main')
+      btnMain.style.backgroundColor = phase.color
+      const iconPlay = document.getElementById('icon-play')
+      const iconPause = document.getElementById('icon-pause')
+      if (status === 'running') {
+        iconPlay.classList.add('hidden')
+        iconPause.classList.remove('hidden')
+        btnMain.setAttribute('aria-label', 'Pause')
+      } else {
+        iconPlay.classList.remove('hidden')
+        iconPause.classList.add('hidden')
+        btnMain.setAttribute('aria-label', status === 'paused' ? 'Resume' : 'Start')
+      }
+
+      // ── Restart / Skip buttons
+      const btnRestart = document.getElementById('btn-restart')
+      const btnSkip = document.getElementById('btn-skip')
+      const canAct = status !== 'idle'
+      btnRestart.disabled = !canAct
+      btnSkip.disabled = !canAct
+      btnRestart.style.opacity = canAct ? '0.8' : '0.3'
+      btnSkip.style.opacity = canAct ? '0.8' : '0.3'
+
+      // ── Session dots
+      renderDots(sessionIndex)
+
+      // ── Stats
+      const focusSessions = todaysFocusSessions()
+      const sessionCount = focusSessions.length
+      const minutes = todaysFocusMinutes()
+      const streak = calculateStreak()
+
+      document.getElementById('stat-sessions').textContent = sessionCount
+      document.getElementById('stat-minutes').textContent = minutes
+      document.getElementById('stat-streak').textContent = streak
+
+      const badge = document.getElementById('badge-sessions')
+      badge.textContent = `${sessionCount} session${sessionCount !== 1 ? 's' : ''} today`
+
+      // ── Goal progress
+      const goalPct = Math.min(100, (sessionCount / DAILY_GOAL) * 100)
+      document.getElementById('goal-label').textContent = `${sessionCount} / ${DAILY_GOAL} sessions`
+      const goalBar = document.getElementById('goal-bar')
+      goalBar.style.width = goalPct + '%'
+      goalBar.style.backgroundColor = phase.color
+
+      // ── Document title
+      if (status === 'running') {
+        document.title = `${formatTime(remaining)} ${phase.label === 'Focus' ? '🍅' : '☕'} — Pomodoro`
+      } else {
+        document.title = '🍅 Pomodoro'
+      }
+    }
+
+    function renderDots(currentIndex) {
+      const container = document.getElementById('session-dots')
+      container.innerHTML = ''
+
+      for (let i = 0; i < SESSIONS_BEFORE_LONG_BREAK; i++) {
+        const dot = document.createElement('div')
+        dot.className = 'dot'
+        dot.setAttribute('aria-hidden', 'true')
+        dot.title = `Session ${i + 1}`
+
+        const isCompleted = state.phase !== 'focus'
+          ? i < currentIndex
+          : i < currentIndex
+
+        const isCurrent = state.phase === 'focus' && i === currentIndex
+
+        if (isCompleted) {
+          dot.style.backgroundColor = PHASES.focus.color
+          dot.style.opacity = '0.7'
+        } else if (isCurrent) {
+          dot.classList.add('active')
+          dot.style.backgroundColor = state.status === 'idle'
+            ? 'rgba(255,255,255,0.2)'
+            : PHASES.focus.color
+          dot.style.opacity = '1'
+        } else {
+          dot.style.backgroundColor = 'rgba(255,255,255,0.15)'
+          dot.style.opacity = '0.5'
+        }
+
+        container.appendChild(dot)
+      }
+
+      // Long break separator dot
+      const sepDot = document.createElement('div')
+      sepDot.className = 'dot'
+      sepDot.style.width = '10px'
+      sepDot.style.height = '10px'
+      sepDot.style.backgroundColor = state.phase === 'long-break' ? '#3b82f6' : 'rgba(255,255,255,0.1)'
+      sepDot.style.opacity = state.phase === 'long-break' ? '1' : '0.4'
+      sepDot.title = 'Long break'
+      container.appendChild(sepDot)
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────────────────────────────────
+    loadSnapshot()
+    updateNotifyButton()
+    render()
+
+    // Start tick interval
+    tickInterval = setInterval(tick, 250)
+
+    // If we restored a running session, show toast
+    if (state.status === 'running') {
+      showToast('Session restored — still running 🍅', 3000)
+    } else if (state.status === 'paused') {
+      showToast('Session restored — paused', 2500)
+    }
+  </script>
+</body>
+</html>
