@@ -1,114 +1,86 @@
 <title>2026 PPR Draft Board</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
-:root {
-  --paper:#f7f6f2; --card:#ffffff; --ink:#17161c; --ink-2:#4d4a58; --ink-3:#8a8797;
-  --rule:#dedbe6; --rule-2:#ecebf1;
-  --accent:#4b1fa8; --accent-ink:#ffffff; --accent-soft:#ece6f8;
-  --rb:#0f7b5f; --wr:#2457c5; --qb:#b8321f; --te:#c27a10; --k:#6d6a7a; --dst:#3d3a4a;
-  --done:#b3b0bd; --focus:#4b1fa8; --head-ink:#ffffff;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper:#141318; --card:#1d1c24; --ink:#f1f0f5; --ink-2:#bdbac9; --ink-3:#7f7c8c;
-    --rule:#33313d; --rule-2:#28262f;
-    --accent:#a88cf0; --accent-ink:#141318; --accent-soft:#2a2340;
-    --rb:#4fd0ab; --wr:#7ea3f5; --qb:#f08a78; --te:#f0b45a; --k:#a9a6b6; --dst:#c9c6d4;
-    --done:#55525f; --focus:#a88cf0; --head-ink:#141318;
-  }
-}
-:root[data-theme="dark"] {
-  --paper:#141318; --card:#1d1c24; --ink:#f1f0f5; --ink-2:#bdbac9; --ink-3:#7f7c8c;
-  --rule:#33313d; --rule-2:#28262f;
-  --accent:#a88cf0; --accent-ink:#141318; --accent-soft:#2a2340;
-  --rb:#4fd0ab; --wr:#7ea3f5; --qb:#f08a78; --te:#f0b45a; --k:#a9a6b6; --dst:#c9c6d4;
-  --done:#55525f; --focus:#a88cf0; --head-ink:#141318;
-}
 * { box-sizing:border-box; }
-body { margin:0; background:var(--paper); color:var(--ink); font:14px/1.35 "Barlow", "Helvetica Neue", Arial, sans-serif; font-variant-numeric:tabular-nums; }
-.wrap { max-width:1500px; margin:0 auto; padding:20px 20px 40px; }
-h1,h2,h3 { font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif; margin:0; text-wrap:balance; }
+body { margin:0; background:#FAFAF7; color:#1B1B1F; font:15px/1.4 "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; font-variant-numeric:tabular-nums; }
+a { color:#1F2A5C; } a:hover { color:#2456B8; }
+h1,h2,h3 { font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif; margin:0; }
+.wrap { max-width:1600px; margin:0 auto; padding:28px 28px 44px; }
 
-/* masthead */
-.mast { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 24px; padding-bottom:14px; border-bottom:3px solid var(--ink); }
-.mast h1 { font-size:44px; line-height:.95; font-weight:800; letter-spacing:-.01em; text-transform:uppercase; }
-.mast h1 small { display:block; font-size:16px; font-weight:600; letter-spacing:.12em; color:var(--accent); margin-bottom:6px; }
-.settings { display:flex; flex-wrap:wrap; gap:6px; }
-.settings span { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase; padding:5px 9px; border:1.5px solid var(--rule); border-radius:3px; color:var(--ink-2); background:var(--card); }
-.settings span b { color:var(--ink); }
+.mast { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px 28px; padding-bottom:18px; border-bottom:3px solid #1F2A5C; }
+.mast h1 { font-size:46px; line-height:1; font-weight:800; letter-spacing:.01em; text-transform:uppercase; color:#1F2A5C; }
+.mast h1 small { display:block; font-family:"IBM Plex Sans",Arial,sans-serif; font-size:14px; font-weight:600; letter-spacing:.14em; color:#4A4956; margin-bottom:8px; }
+.settings { display:flex; flex-wrap:wrap; gap:8px; }
+.settings span { font-size:13px; font-weight:600; letter-spacing:.04em; padding:7px 11px; border:1.5px solid #D9D8E0; border-radius:4px; color:#4A4956; background:#FFFFFF; }
+.settings span b { color:#1F2A5C; font-weight:700; }
 
-/* toolbar */
-.bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; padding:10px 0; color:var(--ink-2); font-size:13px; }
-.bar .legend { display:flex; gap:14px; flex-wrap:wrap; }
-.bar button { font:600 13px "Barlow",sans-serif; color:var(--accent); background:var(--accent-soft); border:0; border-radius:4px; padding:6px 12px; cursor:pointer; }
+.bar { display:flex; flex-wrap:wrap; align-items:center; gap:12px 22px; padding:14px 0 10px; color:#4A4956; font-size:14px; }
+.bar .legend { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+.bar button { font:600 14px "IBM Plex Sans",sans-serif; color:#1F2A5C; background:#E8EBF5; border:0; border-radius:4px; padding:8px 14px; cursor:pointer; }
 .bar button:hover { filter:brightness(.96); }
-.bar button:focus-visible, .p:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
-.flag { display:inline-block; font-style:normal; font-weight:700; font-size:10px; line-height:1; padding:2px 4px; border-radius:2px; margin-left:5px; vertical-align:1px; }
-.flag.rookie { color:var(--accent); border:1px solid var(--accent); }
-.flag.watch { color:var(--qb); border:1px solid var(--qb); }
+.bar button:focus-visible, .p:focus-visible { outline:2px solid #1F2A5C; outline-offset:2px; }
+.flag { display:inline-block; font-style:normal; font-weight:700; font-size:11px; line-height:1; padding:3px 5px; border-radius:3px; margin-left:6px; vertical-align:2px; }
+.flag.rookie { color:#1F2A5C; background:#E8EBF5; }
+.flag.watch { color:#fff; background:#B3361E; }
 
-/* board */
-.board { display:grid; grid-template-columns:1.45fr 1.45fr 1.05fr 1.05fr .8fr .85fr; gap:12px; margin-top:8px; align-items:start; }
-.col { background:var(--card); border:1px solid var(--rule); border-radius:6px; overflow:hidden; }
-.colhead { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 10px 8px; color:var(--head-ink); }
-.col-rb .colhead { background:var(--rb); } .col-wr .colhead { background:var(--wr); } .col-qb .colhead { background:var(--qb); }
-.col-te .colhead { background:var(--te); } .col-k .colhead { background:var(--k); } .col-dst .colhead { background:var(--dst); }
-.colhead h2 { font-size:17px; white-space:nowrap; font-weight:700; letter-spacing:.02em; text-transform:uppercase; display:flex; align-items:baseline; gap:8px; }
-.colhead .abbr { font-size:13px; font-weight:800; opacity:.8; letter-spacing:.1em; }
-.colhead .count { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; font-size:13px; opacity:.85; flex-shrink:0; }
-.list { list-style:none; margin:0; padding:0 0 4px; }
-.tier { padding:0 0 6px; }
-.tier + .tier { border-top:2px solid var(--ink); }
-.rd { display:flex; align-items:center; gap:8px; padding:7px 10px 3px; font-family:"Barlow Condensed",Arial,sans-serif; font-weight:800; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
-.rd i { flex:1; height:1px; background:var(--rule); }
-.p { display:grid; grid-template-columns:30px 1fr 30px 18px; align-items:center; gap:5px; padding:4px 8px; cursor:pointer; border-top:1px solid var(--rule-2); user-select:none; }
-.p:first-of-type { border-top:0; }
-.p:hover { background:var(--accent-soft); }
-.rk { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; font-size:12px; color:var(--ink-3); letter-spacing:.03em; }
-.nm { font-weight:600; font-size:13.5px; line-height:1.15; overflow-wrap:anywhere; }
-.tm { font-size:11.5px; font-weight:600; color:var(--ink-2); letter-spacing:.03em; }
-.bye { font-size:11.5px; color:var(--ink-3); text-align:right; }
-.p.done { color:var(--done); }
-.p.done .nm { text-decoration:line-through; text-decoration-thickness:1.5px; font-weight:500; }
-.p.done .tm, .p.done .rk, .p.done .bye { color:var(--done); }
+.board { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; margin-top:10px; align-items:start; }
+.row2 { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; margin-top:16px; align-items:start; }
+.col { background:#FFFFFF; border:1px solid #D9D8E0; border-radius:8px; overflow:hidden; box-shadow:0 1px 2px rgba(27,27,31,.04); }
+.colhead { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; background:#1F2A5C; color:#fff; border-top:5px solid var(--pos); }
+.colhead h2 { font-size:21px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; white-space:nowrap; display:flex; align-items:center; gap:10px; }
+.colhead .abbr { font-size:12px; font-weight:800; letter-spacing:.12em; padding:3px 7px; border-radius:3px; background:var(--pos); color:#fff; }
+.colhead .count { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:700; font-size:15px; opacity:.85; flex-shrink:0; }
+.list { list-style:none; margin:0; padding:0; }
+.rd { display:flex; align-items:center; padding:7px 14px; background:#EEF0F6; color:#1F2A5C; font-family:"Barlow Condensed",Arial,sans-serif; font-weight:800; font-size:13px; letter-spacing:.16em; text-transform:uppercase; border-top:2px solid #1F2A5C; }
+.tier:first-child .rd { border-top:0; }
+.p { display:grid; grid-template-columns:44px 1fr 38px 26px; align-items:center; gap:8px; padding:7px 14px; cursor:pointer; user-select:none; border-top:1px solid #ECECF1; }
+.p:nth-child(odd) { background:#F5F5F2; }
+.p:hover { background:#E8EBF5; }
+.rk { font-size:12.5px; font-weight:600; color:#6E6D7A; letter-spacing:.02em; }
+.nm { font-weight:600; font-size:15px; line-height:1.2; color:#1B1B1F; }
+.tm { font-size:13px; font-weight:600; color:#4A4956; letter-spacing:.03em; }
+.bye { font-size:13px; color:#6E6D7A; text-align:right; }
+.p.done .nm { text-decoration:line-through; text-decoration-thickness:2px; font-weight:500; color:#A9A8B3; }
+.p.done .tm, .p.done .rk, .p.done .bye { color:#A9A8B3; }
 .p.done .flag { opacity:.35; }
 
-/* footer blocks */
-.foot { display:grid; grid-template-columns:1.1fr 1.6fr 1.3fr; gap:14px; margin-top:16px; }
-.box { background:var(--card); border:1px solid var(--rule); border-radius:6px; padding:12px 14px; }
-.box h3 { font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); margin-bottom:8px; }
-.byes { display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; font-size:12.5px; }
-.bw { display:flex; gap:8px; align-items:baseline; }
-.bw b { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:800; letter-spacing:.06em; color:var(--accent); min-width:40px; }
-.bw span { color:var(--ink-2); letter-spacing:.02em; }
+.foot { margin-top:16px; }
+.box { background:#FFFFFF; border:1px solid #D9D8E0; border-radius:8px; padding:16px 18px; }
+.box h3 { font-size:17px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#1F2A5C; margin-bottom:12px; }
+.byes { display:grid; grid-template-columns:1fr; gap:7px; font-size:14px; }
+.bw { display:grid; grid-template-columns:56px 1fr; gap:10px; align-items:baseline; }
+.bw b { font-family:"Barlow Condensed",Arial,sans-serif; font-weight:800; font-size:15px; letter-spacing:.06em; color:#1F2A5C; }
+.bw span { color:#4A4956; letter-spacing:.03em; font-weight:500; }
 .snake { overflow-x:auto; }
-.snake table { border-collapse:collapse; font-size:11.5px; width:100%; }
-.snake th, .snake td { padding:2px 4px; text-align:center; border-bottom:1px solid var(--rule-2); }
-.snake thead th { font-family:"Barlow Condensed",Arial,sans-serif; letter-spacing:.06em; color:var(--ink-3); font-weight:700; }
-.snake tbody th { text-align:left; font-weight:600; color:var(--ink-2); white-space:nowrap; }
-.tips { margin:0; padding-left:18px; font-size:13px; color:var(--ink-2); }
-.tips li { margin:0 0 6px; }
-.tips b { color:var(--ink); }
-.src { margin-top:14px; font-size:11.5px; color:var(--ink-3); line-height:1.45; }
+.snake table { border-collapse:collapse; font-size:14px; width:100%; }
+.snake th, .snake td { padding:5px 5px; text-align:center; border-bottom:1px solid #ECECF1; }
+.snake thead th { font-family:"Barlow Condensed",Arial,sans-serif; font-size:13px; letter-spacing:.08em; color:#1F2A5C; font-weight:800; }
+.snake tbody th { text-align:left; font-weight:600; color:#4A4956; white-space:nowrap; }
+.snake tbody tr:nth-child(odd) td { background:#F5F5F2; }
+.tips { margin:0; padding-left:20px; font-size:14px; color:#4A4956; line-height:1.45; }
+.tips li { margin:0 0 9px; }
+.tips b { color:#1B1B1F; }
+.src { margin-top:18px; font-size:12.5px; color:#6E6D7A; line-height:1.5; }
 
-@media (max-width:1180px) { .board { grid-template-columns:repeat(3, minmax(0,1fr)); } .colhead h2 { white-space:normal; } .foot { grid-template-columns:1fr 1fr; } .mast h1 { font-size:36px; } }
-@media (max-width:720px)  { .board { grid-template-columns:1fr 1fr; } .foot { grid-template-columns:1fr; } .wrap { padding:14px 12px 30px; } .mast h1 { font-size:30px; } }
-@media (max-width:460px)  { .board { grid-template-columns:1fr; } }
+@media (max-width:1180px) { .board, .row2 { grid-template-columns:repeat(2, minmax(0,1fr)); } .mast h1 { font-size:38px; } .colhead h2 { white-space:normal; } }
+@media (max-width:720px)  { .board, .row2 { grid-template-columns:1fr 1fr; } .wrap { padding:16px 14px 32px; } .mast h1 { font-size:32px; } }
+@media (max-width:460px)  { .board, .row2 { grid-template-columns:1fr; } }
 @media print {
   @page { size:letter landscape; margin:.35in; }
-  body { background:#fff; color:#000; font-size:9.5px; }
+  body { background:#fff; font-size:10px; }
   .wrap { max-width:none; padding:0; }
-  .bar, .bar button { display:none; }
-  .board { grid-template-columns:1.45fr 1.45fr 1.05fr 1.05fr .8fr .85fr; gap:8px; }
-  .col, .box { border-color:#bbb; break-inside:avoid; }
-  .colhead { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .p { padding:2px 6px; grid-template-columns:26px 1fr 26px 16px; }
-  .rd { padding:4px 6px 2px; }
+  .bar { display:none; }
+  .board, .row2 { grid-template-columns:repeat(4, 1fr); gap:8px; }
+  .col, .box { break-inside:avoid; box-shadow:none; }
+  .colhead, .rd, .p, .flag { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .p { padding:2px 8px; grid-template-columns:30px 1fr 28px 18px; }
+  .nm { font-size:10.5px; } .rk, .tm, .bye { font-size:9.5px; }
+  .rd { padding:3px 8px; font-size:10px; }
   .foot { margin-top:8px; }
-  .p.done .nm { text-decoration:line-through; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background:#141318; } }
+:root[data-theme="dark"] body { background:#141318; }
 </style>
 
 <div class="wrap">
@@ -122,21 +94,20 @@ h1,h2,h3 { font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif; margi
 
   <div class="bar">
     <div class="legend">
-      <span><b>Rd</b> = round the player usually leaves the board in a 10-team PPR draft</span>
+      <span><b>Round</b> = when the player usually leaves the board in a 10-team PPR draft</span>
       <span><em class="flag rookie">R</em> Rookie</span>
       <span><em class="flag watch">!</em> Check status before picking</span>
-      <span>Bye week in the last column</span>
+      <span>Last column = bye week</span>
     </div>
     <span style="margin-left:auto">Tap a player to cross them off</span>
     <button type="button" id="reset">Clear crossed-off</button>
     <button type="button" id="print">Print</button>
   </div>
-
   <div class="board">
-<section class="col col-rb" aria-labelledby="h-rb">
+<section class="col col-rb" style="--pos:#1E7A5A" aria-labelledby="h-rb">
 <header class="colhead"><h2 id="h-rb"><span class="abbr">RB</span>Running Backs</h2><span class="count">49</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 1</span><i></i></div>
+<div class="tier"><div class="rd">Round 1</div>
 <li class="p" data-id="rb-1" tabindex="0"><span class="rk">RB1</span><span class="nm">Jahmyr Gibbs</span><span class="tm">DET</span><span class="bye">6</span></li>
 <li class="p" data-id="rb-2" tabindex="0"><span class="rk">RB2</span><span class="nm">Bijan Robinson</span><span class="tm">ATL</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-3" tabindex="0"><span class="rk">RB3</span><span class="nm">Ashton Jeanty</span><span class="tm">LV</span><span class="bye">13</span></li>
@@ -145,297 +116,300 @@ h1,h2,h3 { font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif; margi
 <li class="p" data-id="rb-6" tabindex="0"><span class="rk">RB6</span><span class="nm">Christian McCaffrey</span><span class="tm">SF</span><span class="bye">8</span></li>
 <li class="p" data-id="rb-7" tabindex="0"><span class="rk">RB7</span><span class="nm">Jonathan Taylor</span><span class="tm">IND</span><span class="bye">13</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 2</span><i></i></div>
+<div class="tier"><div class="rd">Round 2</div>
 <li class="p" data-id="rb-8" tabindex="0"><span class="rk">RB8</span><span class="nm">Derrick Henry</span><span class="tm">BAL</span><span class="bye">13</span></li>
 <li class="p" data-id="rb-9" tabindex="0"><span class="rk">RB9</span><span class="nm">Saquon Barkley</span><span class="tm">PHI</span><span class="bye">10</span></li>
 <li class="p" data-id="rb-10" tabindex="0"><span class="rk">RB10</span><span class="nm">Chase Brown</span><span class="tm">CIN</span><span class="bye">6</span></li>
 <li class="p" data-id="rb-11" tabindex="0"><span class="rk">RB11</span><span class="nm">Kenneth Walker III</span><span class="tm">KC</span><span class="bye">5</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 3</span><i></i></div>
+<div class="tier"><div class="rd">Round 3</div>
 <li class="p" data-id="rb-12" tabindex="0"><span class="rk">RB12</span><span class="nm">Jeremiyah Love<em class="flag rookie" title="Rookie">R</em></span><span class="tm">ARI</span><span class="bye">14</span></li>
 <li class="p" data-id="rb-13" tabindex="0"><span class="rk">RB13</span><span class="nm">Omarion Hampton</span><span class="tm">LAC</span><span class="bye">7</span></li>
 <li class="p" data-id="rb-14" tabindex="0"><span class="rk">RB14</span><span class="nm">Javonte Williams</span><span class="tm">DAL</span><span class="bye">14</span></li>
 <li class="p" data-id="rb-15" tabindex="0"><span class="rk">RB15</span><span class="nm">Breece Hall</span><span class="tm">NYJ</span><span class="bye">13</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 4</span><i></i></div>
+<div class="tier"><div class="rd">Round 4</div>
 <li class="p" data-id="rb-16" tabindex="0"><span class="rk">RB16</span><span class="nm">Kyren Williams</span><span class="tm">LAR</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-17" tabindex="0"><span class="rk">RB17</span><span class="nm">Travis Etienne Jr.</span><span class="tm">NO</span><span class="bye">8</span></li>
 <li class="p" data-id="rb-18" tabindex="0"><span class="rk">RB18</span><span class="nm">Quinshon Judkins</span><span class="tm">CLE</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-19" tabindex="0"><span class="rk">RB19</span><span class="nm">D&#x27;Andre Swift</span><span class="tm">CHI</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 5</span><i></i></div>
+<div class="tier"><div class="rd">Round 5</div>
 <li class="p" data-id="rb-20" tabindex="0"><span class="rk">RB20</span><span class="nm">Bucky Irving</span><span class="tm">TB</span><span class="bye">10</span></li>
 <li class="p" data-id="rb-21" tabindex="0"><span class="rk">RB21</span><span class="nm">Cam Skattebo</span><span class="tm">NYG</span><span class="bye">8</span></li>
 <li class="p" data-id="rb-22" tabindex="0"><span class="rk">RB22</span><span class="nm">TreVeyon Henderson</span><span class="tm">NE</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 6</span><i></i></div>
+<div class="tier"><div class="rd">Round 6</div>
 <li class="p" data-id="rb-23" tabindex="0"><span class="rk">RB23</span><span class="nm">Bhayshul Tuten</span><span class="tm">JAX</span><span class="bye">7</span></li>
 <li class="p" data-id="rb-24" tabindex="0"><span class="rk">RB24</span><span class="nm">Jadarian Price<em class="flag rookie" title="Rookie">R</em></span><span class="tm">SEA</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-25" tabindex="0"><span class="rk">RB25</span><span class="nm">David Montgomery</span><span class="tm">HOU</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 7</span><i></i></div>
+<div class="tier"><div class="rd">Round 7</div>
 <li class="p" data-id="rb-26" tabindex="0"><span class="rk">RB26</span><span class="nm">Tony Pollard</span><span class="tm">TEN</span><span class="bye">9</span></li>
 <li class="p" data-id="rb-27" tabindex="0"><span class="rk">RB27</span><span class="nm">Rhamondre Stevenson</span><span class="tm">NE</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-28" tabindex="0"><span class="rk">RB28</span><span class="nm">Chuba Hubbard</span><span class="tm">CAR</span><span class="bye">5</span></li>
 <li class="p" data-id="rb-29" tabindex="0"><span class="rk">RB29</span><span class="nm">Josh Jacobs<em class="flag watch" title="Injury or availability question, check status before you pick">!</em></span><span class="tm">GB</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-30" tabindex="0"><span class="rk">RB30</span><span class="nm">Kenneth Gainwell</span><span class="tm">TB</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 8</span><i></i></div>
+<div class="tier"><div class="rd">Round 8</div>
 <li class="p" data-id="rb-31" tabindex="0"><span class="rk">RB31</span><span class="nm">RJ Harvey</span><span class="tm">DEN</span><span class="bye">10</span></li>
 <li class="p" data-id="rb-32" tabindex="0"><span class="rk">RB32</span><span class="nm">Aaron Jones</span><span class="tm">MIN</span><span class="bye">6</span></li>
 <li class="p" data-id="rb-33" tabindex="0"><span class="rk">RB33</span><span class="nm">Rachaad White</span><span class="tm">WSH</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 9</span><i></i></div>
+<div class="tier"><div class="rd">Round 9</div>
 <li class="p" data-id="rb-34" tabindex="0"><span class="rk">RB34</span><span class="nm">Jaylen Warren</span><span class="tm">PIT</span><span class="bye">9</span></li>
 <li class="p" data-id="rb-35" tabindex="0"><span class="rk">RB35</span><span class="nm">Kaleb Johnson</span><span class="tm">PIT</span><span class="bye">9</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 10</span><i></i></div>
+<div class="tier"><div class="rd">Round 10</div>
 <li class="p" data-id="rb-36" tabindex="0"><span class="rk">RB36</span><span class="nm">Kyle Monangai</span><span class="tm">CHI</span><span class="bye">10</span></li>
 <li class="p" data-id="rb-37" tabindex="0"><span class="rk">RB37</span><span class="nm">MarShawn Lloyd</span><span class="tm">GB</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-38" tabindex="0"><span class="rk">RB38</span><span class="nm">J.K. Dobbins</span><span class="tm">DEN</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 11</span><i></i></div>
+<div class="tier"><div class="rd">Round 11</div>
 <li class="p" data-id="rb-39" tabindex="0"><span class="rk">RB39</span><span class="nm">Blake Corum</span><span class="tm">LAR</span><span class="bye">11</span></li>
 <li class="p" data-id="rb-40" tabindex="0"><span class="rk">RB40</span><span class="nm">Tyjae Spears</span><span class="tm">TEN</span><span class="bye">9</span></li>
 <li class="p" data-id="rb-41" tabindex="0"><span class="rk">RB41</span><span class="nm">Woody Marks</span><span class="tm">HOU</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 12</span><i></i></div>
+<div class="tier"><div class="rd">Round 12</div>
 <li class="p" data-id="rb-42" tabindex="0"><span class="rk">RB42</span><span class="nm">Tyler Allgeier</span><span class="tm">ARI</span><span class="bye">14</span></li>
 <li class="p" data-id="rb-43" tabindex="0"><span class="rk">RB43</span><span class="nm">Isiah Pacheco</span><span class="tm">DET</span><span class="bye">6</span></li>
 <li class="p" data-id="rb-44" tabindex="0"><span class="rk">RB44</span><span class="nm">Jordan Mason</span><span class="tm">MIN</span><span class="bye">6</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 13</span><i></i></div>
+<div class="tier"><div class="rd">Round 13</div>
 <li class="p" data-id="rb-45" tabindex="0"><span class="rk">RB45</span><span class="nm">Jonathon Brooks</span><span class="tm">CAR</span><span class="bye">5</span></li>
 <li class="p" data-id="rb-46" tabindex="0"><span class="rk">RB46</span><span class="nm">Alvin Kamara</span><span class="tm">NO</span><span class="bye">8</span></li>
 <li class="p" data-id="rb-47" tabindex="0"><span class="rk">RB47</span><span class="nm">Najee Harris</span><span class="tm">NYG</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 14</span><i></i></div>
+<div class="tier"><div class="rd">Round 14</div>
 <li class="p" data-id="rb-48" tabindex="0"><span class="rk">RB48</span><span class="nm">Jonah Coleman<em class="flag rookie" title="Rookie">R</em></span><span class="tm">DEN</span><span class="bye">10</span></li>
 <li class="p" data-id="rb-49" tabindex="0"><span class="rk">RB49</span><span class="nm">Isaac Guerendo</span><span class="tm">SF</span><span class="bye">8</span></li>
 </div></ol></section>
-<section class="col col-wr" aria-labelledby="h-wr">
+<section class="col col-wr" style="--pos:#2456B8" aria-labelledby="h-wr">
 <header class="colhead"><h2 id="h-wr"><span class="abbr">WR</span>Wide Receivers</h2><span class="count">53</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 1</span><i></i></div>
+<div class="tier"><div class="rd">Round 1</div>
 <li class="p" data-id="wr-1" tabindex="0"><span class="rk">WR1</span><span class="nm">Ja&#x27;Marr Chase</span><span class="tm">CIN</span><span class="bye">6</span></li>
 <li class="p" data-id="wr-2" tabindex="0"><span class="rk">WR2</span><span class="nm">Puka Nacua</span><span class="tm">LAR</span><span class="bye">11</span></li>
 <li class="p" data-id="wr-3" tabindex="0"><span class="rk">WR3</span><span class="nm">Jaxon Smith-Njigba</span><span class="tm">SEA</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 2</span><i></i></div>
+<div class="tier"><div class="rd">Round 2</div>
 <li class="p" data-id="wr-4" tabindex="0"><span class="rk">WR4</span><span class="nm">Amon-Ra St. Brown</span><span class="tm">DET</span><span class="bye">6</span></li>
 <li class="p" data-id="wr-5" tabindex="0"><span class="rk">WR5</span><span class="nm">Justin Jefferson</span><span class="tm">MIN</span><span class="bye">6</span></li>
 <li class="p" data-id="wr-6" tabindex="0"><span class="rk">WR6</span><span class="nm">CeeDee Lamb</span><span class="tm">DAL</span><span class="bye">14</span></li>
 <li class="p" data-id="wr-7" tabindex="0"><span class="rk">WR7</span><span class="nm">Drake London</span><span class="tm">ATL</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 3</span><i></i></div>
+<div class="tier"><div class="rd">Round 3</div>
 <li class="p" data-id="wr-8" tabindex="0"><span class="rk">WR8</span><span class="nm">Rashee Rice</span><span class="tm">KC</span><span class="bye">5</span></li>
 <li class="p" data-id="wr-9" tabindex="0"><span class="rk">WR9</span><span class="nm">Malik Nabers</span><span class="tm">NYG</span><span class="bye">8</span></li>
 <li class="p" data-id="wr-10" tabindex="0"><span class="rk">WR10</span><span class="nm">A.J. Brown</span><span class="tm">NE</span><span class="bye">11</span></li>
 <li class="p" data-id="wr-11" tabindex="0"><span class="rk">WR11</span><span class="nm">Chris Olave</span><span class="tm">NO</span><span class="bye">8</span></li>
 <li class="p" data-id="wr-12" tabindex="0"><span class="rk">WR12</span><span class="nm">Nico Collins</span><span class="tm">HOU</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 4</span><i></i></div>
+<div class="tier"><div class="rd">Round 4</div>
 <li class="p" data-id="wr-13" tabindex="0"><span class="rk">WR13</span><span class="nm">George Pickens</span><span class="tm">DAL</span><span class="bye">14</span></li>
 <li class="p" data-id="wr-14" tabindex="0"><span class="rk">WR14</span><span class="nm">Emeka Egbuka</span><span class="tm">TB</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-15" tabindex="0"><span class="rk">WR15</span><span class="nm">Garrett Wilson</span><span class="tm">NYJ</span><span class="bye">13</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 5</span><i></i></div>
+<div class="tier"><div class="rd">Round 5</div>
 <li class="p" data-id="wr-16" tabindex="0"><span class="rk">WR16</span><span class="nm">Zay Flowers</span><span class="tm">BAL</span><span class="bye">13</span></li>
 <li class="p" data-id="wr-17" tabindex="0"><span class="rk">WR17</span><span class="nm">Tetairoa McMillan</span><span class="tm">CAR</span><span class="bye">5</span></li>
 <li class="p" data-id="wr-18" tabindex="0"><span class="rk">WR18</span><span class="nm">DeVonta Smith</span><span class="tm">PHI</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-19" tabindex="0"><span class="rk">WR19</span><span class="nm">Jaylen Waddle</span><span class="tm">DEN</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-20" tabindex="0"><span class="rk">WR20</span><span class="nm">Davante Adams</span><span class="tm">LAR</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 6</span><i></i></div>
+<div class="tier"><div class="rd">Round 6</div>
 <li class="p" data-id="wr-21" tabindex="0"><span class="rk">WR21</span><span class="nm">Ladd McConkey</span><span class="tm">LAC</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-22" tabindex="0"><span class="rk">WR22</span><span class="nm">Tee Higgins</span><span class="tm">CIN</span><span class="bye">6</span></li>
 <li class="p" data-id="wr-23" tabindex="0"><span class="rk">WR23</span><span class="nm">Terry McLaurin</span><span class="tm">WSH</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-24" tabindex="0"><span class="rk">WR24</span><span class="nm">Carnell Tate<em class="flag rookie" title="Rookie">R</em></span><span class="tm">TEN</span><span class="bye">9</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 7</span><i></i></div>
+<div class="tier"><div class="rd">Round 7</div>
 <li class="p" data-id="wr-25" tabindex="0"><span class="rk">WR25</span><span class="nm">Rome Odunze</span><span class="tm">CHI</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-26" tabindex="0"><span class="rk">WR26</span><span class="nm">DK Metcalf</span><span class="tm">PIT</span><span class="bye">9</span></li>
 <li class="p" data-id="wr-27" tabindex="0"><span class="rk">WR27</span><span class="nm">DJ Moore</span><span class="tm">BUF</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 8</span><i></i></div>
+<div class="tier"><div class="rd">Round 8</div>
 <li class="p" data-id="wr-28" tabindex="0"><span class="rk">WR28</span><span class="nm">Christian Watson</span><span class="tm">GB</span><span class="bye">11</span></li>
 <li class="p" data-id="wr-29" tabindex="0"><span class="rk">WR29</span><span class="nm">Marvin Harrison Jr.</span><span class="tm">ARI</span><span class="bye">14</span></li>
 <li class="p" data-id="wr-30" tabindex="0"><span class="rk">WR30</span><span class="nm">Luther Burden III</span><span class="tm">CHI</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-31" tabindex="0"><span class="rk">WR31</span><span class="nm">Stefon Diggs</span><span class="tm">WSH</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-32" tabindex="0"><span class="rk">WR32</span><span class="nm">Jameson Williams</span><span class="tm">DET</span><span class="bye">6</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 9</span><i></i></div>
+<div class="tier"><div class="rd">Round 9</div>
 <li class="p" data-id="wr-33" tabindex="0"><span class="rk">WR33</span><span class="nm">Wan&#x27;Dale Robinson</span><span class="tm">TEN</span><span class="bye">9</span></li>
 <li class="p" data-id="wr-34" tabindex="0"><span class="rk">WR34</span><span class="nm">Parker Washington</span><span class="tm">JAX</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-35" tabindex="0"><span class="rk">WR35</span><span class="nm">Michael Wilson</span><span class="tm">ARI</span><span class="bye">14</span></li>
 <li class="p" data-id="wr-36" tabindex="0"><span class="rk">WR36</span><span class="nm">Mike Evans</span><span class="tm">SF</span><span class="bye">8</span></li>
 <li class="p" data-id="wr-37" tabindex="0"><span class="rk">WR37</span><span class="nm">Courtland Sutton</span><span class="tm">DEN</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 10</span><i></i></div>
+<div class="tier"><div class="rd">Round 10</div>
 <li class="p" data-id="wr-38" tabindex="0"><span class="rk">WR38</span><span class="nm">Michael Pittman Jr.</span><span class="tm">PIT</span><span class="bye">9</span></li>
 <li class="p" data-id="wr-39" tabindex="0"><span class="rk">WR39</span><span class="nm">Jakobi Meyers</span><span class="tm">JAX</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-40" tabindex="0"><span class="rk">WR40</span><span class="nm">Chris Godwin</span><span class="tm">TB</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-41" tabindex="0"><span class="rk">WR41</span><span class="nm">Matthew Golden</span><span class="tm">GB</span><span class="bye">11</span></li>
 <li class="p" data-id="wr-42" tabindex="0"><span class="rk">WR42</span><span class="nm">Brian Thomas Jr.</span><span class="tm">JAX</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 11</span><i></i></div>
+<div class="tier"><div class="rd">Round 11</div>
 <li class="p" data-id="wr-43" tabindex="0"><span class="rk">WR43</span><span class="nm">Xavier Worthy</span><span class="tm">KC</span><span class="bye">5</span></li>
 <li class="p" data-id="wr-44" tabindex="0"><span class="rk">WR44</span><span class="nm">Travis Hunter</span><span class="tm">JAX</span><span class="bye">7</span></li>
 <li class="p" data-id="wr-45" tabindex="0"><span class="rk">WR45</span><span class="nm">Calvin Ridley</span><span class="tm">TEN</span><span class="bye">9</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 12</span><i></i></div>
+<div class="tier"><div class="rd">Round 12</div>
 <li class="p" data-id="wr-46" tabindex="0"><span class="rk">WR46</span><span class="nm">Makai Lemon<em class="flag rookie" title="Rookie">R</em></span><span class="tm">PHI</span><span class="bye">10</span></li>
 <li class="p" data-id="wr-47" tabindex="0"><span class="rk">WR47</span><span class="nm">Denzel Boston<em class="flag rookie" title="Rookie">R</em></span><span class="tm">CLE</span><span class="bye">11</span></li>
 <li class="p" data-id="wr-48" tabindex="0"><span class="rk">WR48</span><span class="nm">Jayden Higgins</span><span class="tm">HOU</span><span class="bye">8</span></li>
 <li class="p" data-id="wr-49" tabindex="0"><span class="rk">WR49</span><span class="nm">Jordan Addison</span><span class="tm">MIN</span><span class="bye">6</span></li>
 <li class="p" data-id="wr-50" tabindex="0"><span class="rk">WR50</span><span class="nm">Cooper Kupp</span><span class="tm">SEA</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 13</span><i></i></div>
+<div class="tier"><div class="rd">Round 13</div>
 <li class="p" data-id="wr-51" tabindex="0"><span class="rk">WR51</span><span class="nm">Josh Downs</span><span class="tm">IND</span><span class="bye">13</span></li>
 <li class="p" data-id="wr-52" tabindex="0"><span class="rk">WR52</span><span class="nm">Deebo Samuel</span><span class="tm">SF</span><span class="bye">8</span></li>
 <li class="p" data-id="wr-53" tabindex="0"><span class="rk">WR53</span><span class="nm">Jordyn Tyson<em class="flag rookie" title="Rookie">R</em></span><span class="tm">NO</span><span class="bye">8</span></li>
 </div></ol></section>
-<section class="col col-qb" aria-labelledby="h-qb">
+<section class="col col-qb" style="--pos:#B3361E" aria-labelledby="h-qb">
 <header class="colhead"><h2 id="h-qb"><span class="abbr">QB</span>Quarterbacks</h2><span class="count">16</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 3</span><i></i></div>
+<div class="tier"><div class="rd">Round 3</div>
 <li class="p" data-id="qb-1" tabindex="0"><span class="rk">QB1</span><span class="nm">Josh Allen</span><span class="tm">BUF</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 4</span><i></i></div>
+<div class="tier"><div class="rd">Round 4</div>
 <li class="p" data-id="qb-2" tabindex="0"><span class="rk">QB2</span><span class="nm">Lamar Jackson</span><span class="tm">BAL</span><span class="bye">13</span></li>
 <li class="p" data-id="qb-3" tabindex="0"><span class="rk">QB3</span><span class="nm">Jayden Daniels</span><span class="tm">WSH</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 5</span><i></i></div>
+<div class="tier"><div class="rd">Round 5</div>
 <li class="p" data-id="qb-4" tabindex="0"><span class="rk">QB4</span><span class="nm">Drake Maye</span><span class="tm">NE</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 6</span><i></i></div>
+<div class="tier"><div class="rd">Round 6</div>
 <li class="p" data-id="qb-5" tabindex="0"><span class="rk">QB5</span><span class="nm">Joe Burrow</span><span class="tm">CIN</span><span class="bye">6</span></li>
 <li class="p" data-id="qb-6" tabindex="0"><span class="rk">QB6</span><span class="nm">Jalen Hurts</span><span class="tm">PHI</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 7</span><i></i></div>
+<div class="tier"><div class="rd">Round 7</div>
 <li class="p" data-id="qb-7" tabindex="0"><span class="rk">QB7</span><span class="nm">Caleb Williams</span><span class="tm">CHI</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 8</span><i></i></div>
+<div class="tier"><div class="rd">Round 8</div>
 <li class="p" data-id="qb-8" tabindex="0"><span class="rk">QB8</span><span class="nm">Justin Herbert</span><span class="tm">LAC</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 9</span><i></i></div>
+<div class="tier"><div class="rd">Round 9</div>
 <li class="p" data-id="qb-9" tabindex="0"><span class="rk">QB9</span><span class="nm">Jaxson Dart</span><span class="tm">NYG</span><span class="bye">8</span></li>
 <li class="p" data-id="qb-10" tabindex="0"><span class="rk">QB10</span><span class="nm">Trevor Lawrence</span><span class="tm">JAX</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 10</span><i></i></div>
+<div class="tier"><div class="rd">Round 10</div>
 <li class="p" data-id="qb-11" tabindex="0"><span class="rk">QB11</span><span class="nm">Dak Prescott</span><span class="tm">DAL</span><span class="bye">14</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 11</span><i></i></div>
+<div class="tier"><div class="rd">Round 11</div>
 <li class="p" data-id="qb-12" tabindex="0"><span class="rk">QB12</span><span class="nm">Brock Purdy</span><span class="tm">SF</span><span class="bye">8</span></li>
 <li class="p" data-id="qb-13" tabindex="0"><span class="rk">QB13</span><span class="nm">Patrick Mahomes</span><span class="tm">KC</span><span class="bye">5</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 12</span><i></i></div>
+<div class="tier"><div class="rd">Round 12</div>
 <li class="p" data-id="qb-14" tabindex="0"><span class="rk">QB14</span><span class="nm">Matthew Stafford</span><span class="tm">LAR</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 13</span><i></i></div>
+<div class="tier"><div class="rd">Round 13</div>
 <li class="p" data-id="qb-15" tabindex="0"><span class="rk">QB15</span><span class="nm">Jared Goff</span><span class="tm">DET</span><span class="bye">6</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 14</span><i></i></div>
+<div class="tier"><div class="rd">Round 14</div>
 <li class="p" data-id="qb-16" tabindex="0"><span class="rk">QB16</span><span class="nm">Bo Nix</span><span class="tm">DEN</span><span class="bye">10</span></li>
 </div></ol></section>
-<section class="col col-te" aria-labelledby="h-te">
+<section class="col col-te" style="--pos:#B86E0A" aria-labelledby="h-te">
 <header class="colhead"><h2 id="h-te"><span class="abbr">TE</span>Tight Ends</h2><span class="count">13</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 2</span><i></i></div>
+<div class="tier"><div class="rd">Round 2</div>
 <li class="p" data-id="te-1" tabindex="0"><span class="rk">TE1</span><span class="nm">Brock Bowers</span><span class="tm">LV</span><span class="bye">13</span></li>
 <li class="p" data-id="te-2" tabindex="0"><span class="rk">TE2</span><span class="nm">Trey McBride</span><span class="tm">ARI</span><span class="bye">14</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 4</span><i></i></div>
+<div class="tier"><div class="rd">Round 4</div>
 <li class="p" data-id="te-3" tabindex="0"><span class="rk">TE3</span><span class="nm">Colston Loveland</span><span class="tm">CHI</span><span class="bye">10</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 5</span><i></i></div>
+<div class="tier"><div class="rd">Round 5</div>
 <li class="p" data-id="te-4" tabindex="0"><span class="rk">TE4</span><span class="nm">Tyler Warren</span><span class="tm">IND</span><span class="bye">13</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 6</span><i></i></div>
+<div class="tier"><div class="rd">Round 6</div>
 <li class="p" data-id="te-5" tabindex="0"><span class="rk">TE5</span><span class="nm">Tucker Kraft<em class="flag watch" title="Injury or availability question, check status before you pick">!</em></span><span class="tm">GB</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 7</span><i></i></div>
+<div class="tier"><div class="rd">Round 7</div>
 <li class="p" data-id="te-6" tabindex="0"><span class="rk">TE6</span><span class="nm">Sam LaPorta</span><span class="tm">DET</span><span class="bye">6</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 8</span><i></i></div>
+<div class="tier"><div class="rd">Round 8</div>
 <li class="p" data-id="te-7" tabindex="0"><span class="rk">TE7</span><span class="nm">George Kittle<em class="flag watch" title="Injury or availability question, check status before you pick">!</em></span><span class="tm">SF</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 9</span><i></i></div>
+<div class="tier"><div class="rd">Round 9</div>
 <li class="p" data-id="te-8" tabindex="0"><span class="rk">TE8</span><span class="nm">Dalton Kincaid</span><span class="tm">BUF</span><span class="bye">7</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 10</span><i></i></div>
+<div class="tier"><div class="rd">Round 10</div>
 <li class="p" data-id="te-9" tabindex="0"><span class="rk">TE9</span><span class="nm">Kyle Pitts</span><span class="tm">ATL</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 11</span><i></i></div>
+<div class="tier"><div class="rd">Round 11</div>
 <li class="p" data-id="te-10" tabindex="0"><span class="rk">TE10</span><span class="nm">Jake Ferguson</span><span class="tm">DAL</span><span class="bye">14</span></li>
 <li class="p" data-id="te-11" tabindex="0"><span class="rk">TE11</span><span class="nm">Travis Kelce</span><span class="tm">KC</span><span class="bye">5</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 12</span><i></i></div>
+<div class="tier"><div class="rd">Round 12</div>
 <li class="p" data-id="te-12" tabindex="0"><span class="rk">TE12</span><span class="nm">Isaiah Likely</span><span class="tm">BAL</span><span class="bye">13</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 14</span><i></i></div>
+<div class="tier"><div class="rd">Round 14</div>
 <li class="p" data-id="te-13" tabindex="0"><span class="rk">TE13</span><span class="nm">Oronde Gadsden II</span><span class="tm">LAC</span><span class="bye">7</span></li>
 </div></ol></section>
-<section class="col col-k" aria-labelledby="h-k">
+  </div>
+
+  <div class="row2">
+<section class="col col-k" style="--pos:#5F5D6B" aria-labelledby="h-k">
 <header class="colhead"><h2 id="h-k"><span class="abbr">K</span>Kickers</h2><span class="count">9</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 13</span><i></i></div>
+<div class="tier"><div class="rd">Round 13</div>
 <li class="p" data-id="k-1" tabindex="0"><span class="rk">K1</span><span class="nm">Brandon Aubrey</span><span class="tm">DAL</span><span class="bye">14</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 14</span><i></i></div>
+<div class="tier"><div class="rd">Round 14</div>
 <li class="p" data-id="k-2" tabindex="0"><span class="rk">K2</span><span class="nm">Cam Little</span><span class="tm">JAX</span><span class="bye">7</span></li>
 <li class="p" data-id="k-3" tabindex="0"><span class="rk">K3</span><span class="nm">Cameron Dicker</span><span class="tm">LAC</span><span class="bye">7</span></li>
 <li class="p" data-id="k-4" tabindex="0"><span class="rk">K4</span><span class="nm">Ka&#x27;imi Fairbairn</span><span class="tm">HOU</span><span class="bye">8</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 15</span><i></i></div>
+<div class="tier"><div class="rd">Round 15</div>
 <li class="p" data-id="k-5" tabindex="0"><span class="rk">K5</span><span class="nm">Jason Myers</span><span class="tm">SEA</span><span class="bye">11</span></li>
 <li class="p" data-id="k-6" tabindex="0"><span class="rk">K6</span><span class="nm">Evan McPherson</span><span class="tm">CIN</span><span class="bye">6</span></li>
 <li class="p" data-id="k-7" tabindex="0"><span class="rk">K7</span><span class="nm">Harrison Mevis</span><span class="tm">LAR</span><span class="bye">11</span></li>
 <li class="p" data-id="k-8" tabindex="0"><span class="rk">K8</span><span class="nm">Andy Borregales</span><span class="tm">NE</span><span class="bye">11</span></li>
 <li class="p" data-id="k-9" tabindex="0"><span class="rk">K9</span><span class="nm">Eddy Pineiro</span><span class="tm">SF</span><span class="bye">8</span></li>
 </div></ol></section>
-<section class="col col-dst" aria-labelledby="h-dst">
+<section class="col col-dst" style="--pos:#3A3847" aria-labelledby="h-dst">
 <header class="colhead"><h2 id="h-dst"><span class="abbr">DEF</span>Defense / ST</h2><span class="count">10</span></header>
 <ol class="list">
-<div class="tier"><div class="rd"><span>Rd 13</span><i></i></div>
+<div class="tier"><div class="rd">Round 13</div>
 <li class="p" data-id="dst-1" tabindex="0"><span class="rk">DEF1</span><span class="nm">Texans D/ST</span><span class="tm">HOU</span><span class="bye">8</span></li>
 <li class="p" data-id="dst-2" tabindex="0"><span class="rk">DEF2</span><span class="nm">Seahawks D/ST</span><span class="tm">SEA</span><span class="bye">11</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 14</span><i></i></div>
+<div class="tier"><div class="rd">Round 14</div>
 <li class="p" data-id="dst-3" tabindex="0"><span class="rk">DEF3</span><span class="nm">Broncos D/ST</span><span class="tm">DEN</span><span class="bye">10</span></li>
 <li class="p" data-id="dst-4" tabindex="0"><span class="rk">DEF4</span><span class="nm">Rams D/ST</span><span class="tm">LAR</span><span class="bye">11</span></li>
 <li class="p" data-id="dst-5" tabindex="0"><span class="rk">DEF5</span><span class="nm">Steelers D/ST</span><span class="tm">PIT</span><span class="bye">9</span></li>
 </div>
-<div class="tier"><div class="rd"><span>Rd 15</span><i></i></div>
+<div class="tier"><div class="rd">Round 15</div>
 <li class="p" data-id="dst-6" tabindex="0"><span class="rk">DEF6</span><span class="nm">Ravens D/ST</span><span class="tm">BAL</span><span class="bye">13</span></li>
 <li class="p" data-id="dst-7" tabindex="0"><span class="rk">DEF7</span><span class="nm">Eagles D/ST</span><span class="tm">PHI</span><span class="bye">10</span></li>
 <li class="p" data-id="dst-8" tabindex="0"><span class="rk">DEF8</span><span class="nm">Lions D/ST</span><span class="tm">DET</span><span class="bye">6</span></li>
 <li class="p" data-id="dst-9" tabindex="0"><span class="rk">DEF9</span><span class="nm">Patriots D/ST</span><span class="tm">NE</span><span class="bye">11</span></li>
 <li class="p" data-id="dst-10" tabindex="0"><span class="rk">DEF10</span><span class="nm">Vikings D/ST</span><span class="tm">MIN</span><span class="bye">6</span></li>
 </div></ol></section>
-  </div>
-
-  <div class="foot">
     <div class="box">
       <h3>2026 Bye Weeks</h3>
-      <div class="byes"><div class="bw"><b>Wk 5</b><span>CAR KC</span></div><div class="bw"><b>Wk 6</b><span>CIN DET MIA MIN</span></div><div class="bw"><b>Wk 7</b><span>BUF JAX LAC WSH</span></div><div class="bw"><b>Wk 8</b><span>HOU NO NYG SF</span></div><div class="bw"><b>Wk 9</b><span>PIT TEN</span></div><div class="bw"><b>Wk 10</b><span>CHI DEN PHI TB</span></div><div class="bw"><b>Wk 11</b><span>ATL CLE GB LAR NE SEA</span></div><div class="bw"><b>Wk 13</b><span>BAL IND LV NYJ</span></div><div class="bw"><b>Wk 14</b><span>ARI DAL</span></div></div>
-    </div>
-    <div class="box snake">
-      <h3>Your pick number by round (snake)</h3>
-      <table>
-        <thead><tr><th></th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>R8</th><th>R9</th><th>R10</th><th>R11</th><th>R12</th><th>R13</th><th>R14</th><th>R15</th></tr></thead>
-        <tbody><tr><th>Slot 1</th><td>1</td><td>20</td><td>21</td><td>40</td><td>41</td><td>60</td><td>61</td><td>80</td><td>81</td><td>100</td><td>101</td><td>120</td><td>121</td><td>140</td><td>141</td></tr><tr><th>Slot 2</th><td>2</td><td>19</td><td>22</td><td>39</td><td>42</td><td>59</td><td>62</td><td>79</td><td>82</td><td>99</td><td>102</td><td>119</td><td>122</td><td>139</td><td>142</td></tr><tr><th>Slot 3</th><td>3</td><td>18</td><td>23</td><td>38</td><td>43</td><td>58</td><td>63</td><td>78</td><td>83</td><td>98</td><td>103</td><td>118</td><td>123</td><td>138</td><td>143</td></tr><tr><th>Slot 4</th><td>4</td><td>17</td><td>24</td><td>37</td><td>44</td><td>57</td><td>64</td><td>77</td><td>84</td><td>97</td><td>104</td><td>117</td><td>124</td><td>137</td><td>144</td></tr><tr><th>Slot 5</th><td>5</td><td>16</td><td>25</td><td>36</td><td>45</td><td>56</td><td>65</td><td>76</td><td>85</td><td>96</td><td>105</td><td>116</td><td>125</td><td>136</td><td>145</td></tr><tr><th>Slot 6</th><td>6</td><td>15</td><td>26</td><td>35</td><td>46</td><td>55</td><td>66</td><td>75</td><td>86</td><td>95</td><td>106</td><td>115</td><td>126</td><td>135</td><td>146</td></tr><tr><th>Slot 7</th><td>7</td><td>14</td><td>27</td><td>34</td><td>47</td><td>54</td><td>67</td><td>74</td><td>87</td><td>94</td><td>107</td><td>114</td><td>127</td><td>134</td><td>147</td></tr><tr><th>Slot 8</th><td>8</td><td>13</td><td>28</td><td>33</td><td>48</td><td>53</td><td>68</td><td>73</td><td>88</td><td>93</td><td>108</td><td>113</td><td>128</td><td>133</td><td>148</td></tr><tr><th>Slot 9</th><td>9</td><td>12</td><td>29</td><td>32</td><td>49</td><td>52</td><td>69</td><td>72</td><td>89</td><td>92</td><td>109</td><td>112</td><td>129</td><td>132</td><td>149</td></tr><tr><th>Slot 10</th><td>10</td><td>11</td><td>30</td><td>31</td><td>50</td><td>51</td><td>70</td><td>71</td><td>90</td><td>91</td><td>110</td><td>111</td><td>130</td><td>131</td><td>150</td></tr></tbody>
-      </table>
+      <div class="byes"><div class="bw"><b>Wk 5</b><span>CAR · KC</span></div><div class="bw"><b>Wk 6</b><span>CIN · DET · MIA · MIN</span></div><div class="bw"><b>Wk 7</b><span>BUF · JAX · LAC · WSH</span></div><div class="bw"><b>Wk 8</b><span>HOU · NO · NYG · SF</span></div><div class="bw"><b>Wk 9</b><span>PIT · TEN</span></div><div class="bw"><b>Wk 10</b><span>CHI · DEN · PHI · TB</span></div><div class="bw"><b>Wk 11</b><span>ATL · CLE · GB · LAR · NE · SEA</span></div><div class="bw"><b>Wk 13</b><span>BAL · IND · LV · NYJ</span></div><div class="bw"><b>Wk 14</b><span>ARI · DAL</span></div></div>
     </div>
     <div class="box">
       <h3>Game plan</h3>
       <ul class="tips">
         <li><b>Rounds 1 to 4:</b> take the best RB or WR available. Bowers and McBride are the only TEs worth a round 2 pick.</li>
-        <li><b>QB can wait.</b> Allen is the lone round 3 QB. Burrow, Hurts, Caleb Williams and Herbert all go rounds 6 to 8 and score close to the same. Yahoo rooms take QBs about a round early, so do not chase.</li>
+        <li><b>QB can wait.</b> Allen is the lone round 3 QB. Burrow, Hurts, Caleb Williams and Herbert go rounds 6 to 8 and score close to the same.</li>
         <li><b>Rounds 5 to 9 win PPR leagues.</b> Target-heavy WRs (McConkey, Higgins, McLaurin, Odunze) and pass-catching RBs (Skattebo, Gainwell, Rachaad White) outscore early-down bruisers here.</li>
         <li><b>Kicker and defense in rounds 14 and 15.</b> Aubrey and the Texans are the only ones worth an earlier reach.</li>
         <li><b>Rookies</b> (Love, Price, Tuten, Tate, Lemon) carry more week-to-week swing. Pair them with a steady vet.</li>
       </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="box snake">
+      <h3>Your pick number by round</h3>
+      <table>
+        <thead><tr><th></th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>R8</th><th>R9</th><th>R10</th><th>R11</th><th>R12</th><th>R13</th><th>R14</th><th>R15</th></tr></thead>
+        <tbody><tr><th>Slot 1</th><td>1</td><td>20</td><td>21</td><td>40</td><td>41</td><td>60</td><td>61</td><td>80</td><td>81</td><td>100</td><td>101</td><td>120</td><td>121</td><td>140</td><td>141</td></tr><tr><th>Slot 2</th><td>2</td><td>19</td><td>22</td><td>39</td><td>42</td><td>59</td><td>62</td><td>79</td><td>82</td><td>99</td><td>102</td><td>119</td><td>122</td><td>139</td><td>142</td></tr><tr><th>Slot 3</th><td>3</td><td>18</td><td>23</td><td>38</td><td>43</td><td>58</td><td>63</td><td>78</td><td>83</td><td>98</td><td>103</td><td>118</td><td>123</td><td>138</td><td>143</td></tr><tr><th>Slot 4</th><td>4</td><td>17</td><td>24</td><td>37</td><td>44</td><td>57</td><td>64</td><td>77</td><td>84</td><td>97</td><td>104</td><td>117</td><td>124</td><td>137</td><td>144</td></tr><tr><th>Slot 5</th><td>5</td><td>16</td><td>25</td><td>36</td><td>45</td><td>56</td><td>65</td><td>76</td><td>85</td><td>96</td><td>105</td><td>116</td><td>125</td><td>136</td><td>145</td></tr><tr><th>Slot 6</th><td>6</td><td>15</td><td>26</td><td>35</td><td>46</td><td>55</td><td>66</td><td>75</td><td>86</td><td>95</td><td>106</td><td>115</td><td>126</td><td>135</td><td>146</td></tr><tr><th>Slot 7</th><td>7</td><td>14</td><td>27</td><td>34</td><td>47</td><td>54</td><td>67</td><td>74</td><td>87</td><td>94</td><td>107</td><td>114</td><td>127</td><td>134</td><td>147</td></tr><tr><th>Slot 8</th><td>8</td><td>13</td><td>28</td><td>33</td><td>48</td><td>53</td><td>68</td><td>73</td><td>88</td><td>93</td><td>108</td><td>113</td><td>128</td><td>133</td><td>148</td></tr><tr><th>Slot 9</th><td>9</td><td>12</td><td>29</td><td>32</td><td>49</td><td>52</td><td>69</td><td>72</td><td>89</td><td>92</td><td>109</td><td>112</td><td>129</td><td>132</td><td>149</td></tr><tr><th>Slot 10</th><td>10</td><td>11</td><td>30</td><td>31</td><td>50</td><td>51</td><td>70</td><td>71</td><td>90</td><td>91</td><td>110</td><td>111</td><td>130</td><td>131</td><td>150</td></tr></tbody>
+      </table>
     </div>
   </div>
 
@@ -444,27 +418,17 @@ h1,h2,h3 { font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif; margi
 
 <script>
 (function(){
-  var KEY='ppr26-done';
-  var done={};
+  var KEY='ppr26-done', done={};
   try { done = JSON.parse(localStorage.getItem(KEY)||'{}') || {}; } catch(e) { done={}; }
   var rows=document.querySelectorAll('.p');
   rows.forEach(function(r){ if(done[r.dataset.id]) r.classList.add('done'); });
   function save(){ try { localStorage.setItem(KEY, JSON.stringify(done)); } catch(e) {} }
-  function toggle(r){
-    var id=r.dataset.id;
-    if(done[id]) { delete done[id]; r.classList.remove('done'); }
-    else { done[id]=1; r.classList.add('done'); }
-    save();
-  }
-  document.querySelector('.board').addEventListener('click', function(e){
-    var r=e.target.closest('.p'); if(r) toggle(r);
-  });
-  document.querySelector('.board').addEventListener('keydown', function(e){
-    if(e.key===' '||e.key==='Enter'){ var r=e.target.closest('.p'); if(r){ e.preventDefault(); toggle(r); } }
-  });
-  document.getElementById('reset').addEventListener('click', function(){
-    done={}; save(); rows.forEach(function(r){ r.classList.remove('done'); });
-  });
+  function toggle(r){ var id=r.dataset.id; if(done[id]){ delete done[id]; r.classList.remove('done'); } else { done[id]=1; r.classList.add('done'); } save(); }
+  var board=document.querySelector('.board');
+  board.addEventListener('click', function(e){ var r=e.target.closest('.p'); if(r) toggle(r); });
+  board.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ var r=e.target.closest('.p'); if(r){ e.preventDefault(); toggle(r); } } });
+  document.getElementById('reset').addEventListener('click', function(){ done={}; save(); rows.forEach(function(r){ r.classList.remove('done'); }); });
   document.getElementById('print').addEventListener('click', function(){ window.print(); });
 })();
 </script>
+
